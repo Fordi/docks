@@ -16,17 +16,25 @@ function home-bin() {
   echo "Warning: No local user bin directory; created ${HOME}/.local/bin and added to PATH"
 }
 
-if [[ "$0" == "bash" ]]; then
+if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
   mkdir -p "${HOME}/.local/lib"
+  if [[ -d "${HOME}/.local/lib/docks" && ! -d "${HOME}/.local/lib/docks/.git" ]]; then
+    rm -rf "${HOME}/.local/lib/docks"
+  fi
   if [[ ! -d "${HOME}/.local/lib/docks" ]]; then
     git clone "https://github.com/Fordi/docks" "${HOME}/.local/lib/docks"
   fi
   # shellcheck disable=SC1091
-  source "${HOME}/.local/lib/docks/install.sh"
+  bash "${HOME}/.local/lib/docks/install.sh"
   exit
 fi
-REAL_BASH_SOURCE="$(readlink -f "${BASH_SOURCE[0]}")"
+
+REAL_BASH_SOURCE="$(readlink -f "$0")"
 HERE="$(dirname "${REAL_BASH_SOURCE}")";
+echo "Installed to ${HERE}"
 source "${HERE}/prereqs.sh"
 HOME_BIN="$(home-bin)"
-ln -s "${HERE}/docks.sh" "${HOME_BIN}/docks"
+if [[ -L "${HOME_BIN}/docks" ]]; then
+  rm "${HOME_BIN}/docks"
+fi
+ln -s "${HERE}/docks.sh" "${HOME_BIN}/docks" && echo "Symlinked to ${HOME_BIN}/docks"
