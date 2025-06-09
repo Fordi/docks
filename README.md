@@ -35,6 +35,7 @@ docks -h | --help | [-r {project root}] {command} <...args>
   lsr {pattern}      List running screens matching {pattern} (egrep)
   lsc                List configured screens
   lsc {pattern}      List configured screens matching {pattern}
+  update             Check for updates
 Logs are stored in `{project root}/{name}.log`
 Screens are configured in `{project root}`/.docks.yml
 ```
