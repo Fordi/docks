@@ -3,6 +3,13 @@ docks
 
 A CLI tool for managing multiple screens into a docker compose container.
 
+Installation
+============
+
+```bash
+wget https://raw.githubusercontent.com/Fordi/docks/refs/heads/main/install.sh -O- | bash
+```
+
 Usage
 =====
 
