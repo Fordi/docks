@@ -23,10 +23,7 @@ if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
   fi
   if [[ ! -d "${HOME}/.local/lib/docks" ]]; then
     git clone "https://github.com/Fordi/docks" "${HOME}/.local/lib/docks"
-  else
-    pushd "${HOME}/.local/lib/docks" > /dev/null 2>&1 || true
-    git pull
-    popd > /dev/null 2>&1 || true
+    export UPDATED=1
   fi
   # shellcheck disable=SC1091
   bash "${HOME}/.local/lib/docks/install.sh"
@@ -36,6 +33,12 @@ fi
 REAL_BASH_SOURCE="$(readlink -f "$0")"
 HERE="$(dirname "${REAL_BASH_SOURCE}")";
 echo "Installed to ${HERE}"
+if [[ -z "$UPDATED" ]]; then
+  pushd "${HERE}" > /dev/null 2>&1 || true
+  git pull
+  popd > /dev/null 2>&1 || true
+fi
+
 source "${HERE}/prereqs.sh"
 HOME_BIN="$(home-bin)"
 if [[ -L "${HOME_BIN}/docks" ]]; then
