@@ -45,8 +45,7 @@ function endScreen() {
   if screen -ls "${fullName}" > /dev/null 2>&1; then
     echo "Terminating ${fullName}"
     screen -S "${fullName}" -X at 0 stuff '^C'
-    screen -S "${fullName}" -X at 0 stuff "exit\n"
-    
+    screen -S "${fullName}" -X at 0 stuff "exit\n"  
   else
     echo "${fullName} not running"
   fi
