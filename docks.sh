@@ -26,13 +26,14 @@ if [[ "$1" == "in" ]]; then
   exit
 fi
 
-if [[ "$1" == "kill" ]]; then
+if [[ "$1" == "stop" ]]; then
   shift;
   if [[ "${#}" == 0 ]]; then
+    # shellcheck disable=SC2312
     while read -r line; do
       SCREEN="$(echo "${line}" | cut -d \" -f 2)"
       endScreen "${SCREEN}"
-    done < <(getScreens || true)
+    done < <(getScreens)
     exit 0
   fi
   for name in "$@"; do
@@ -44,10 +45,11 @@ fi
 if [[ "$1" == "lsc" ]]; then
   shift;
   PATTERN="${1:-^${PREFIX}}"
-  while read -r line || true; do
-    SCREEN="$(echo "${line}" | (cut -d \" -f 2 || true))"
+  # shellcheck disable=SC2312
+  while read -r line; do
+    SCREEN="$(echo "${line}" | cut -d \" -f 2)"
     echo "${PREFIX}${SCREEN}"
-  done < <(getScreens || true) | grep -E "${PATTERN}"
+  done < <(getScreens) | grep -E "${PATTERN}"
   exit 0
 fi
 
@@ -72,13 +74,14 @@ fi
 if [[ "$1" == "start" ]]; then
   shift;
   SCREENS=("${@}")
+  # shellcheck disable=SC2312
   while read -r line; do
     SCREEN="$(echo "${line}" | cut -d \" -f 2)"
     if [[ "${#}" == 0 ]] || containsElement "${SCREEN}" "${SCREENS[@]}"; then
       IFS=" " read -r -a CMD <<< "$(echo "${line}" | cut -d \" -f 4 || true)"
       startScreen "${SCREEN}" "${CMD[@]}"
     fi
-  done < <(getScreens || true)
+  done < <(getScreens)
   exit 0
 fi
 
