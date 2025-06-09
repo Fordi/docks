@@ -5,6 +5,7 @@ function isHelp() {
     if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "-?" || "$1" == "help" ]]; then
       return 0
     fi
+    shift
   done
   return 1
 }
