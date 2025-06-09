@@ -67,5 +67,5 @@ function getScreens() {
 }
 
 function getConfig() {
-  yq -r '.["'"$1"'"] // "'"$2"'"' "${CONFIG}"
+  yq -r '.["'"$1"'"] // "'"$2"'"' "${CONFIG}" 2>/dev/null
 }

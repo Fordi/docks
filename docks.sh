@@ -2,10 +2,6 @@
 REAL_BASH_SOURCE="$(readlink -f "${BASH_SOURCE[0]}")"
 # shellcheck source-path=SCRIPTDIR
 HERE="$(dirname "${REAL_BASH_SOURCE}")";
-if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "-?" || "$1" == "help" ]]; then
-  shift
-  source "${HERE}/usage.sh"
-fi
 
 if [[ "$1" == "update" ]]; then
   pushd "${HERE}" > /dev/null 2>&1 || exit 1
@@ -18,8 +14,14 @@ source "${HERE}/prereqs.sh"
 source "${HERE}/env.sh"
 source "${HERE}/utils.sh"
 
+
 PREFIX="$(getConfig prefix "")"
 CONTAINER="$(getConfig container dev)"
+
+if isHelp "$@"; then
+  shift
+  source "${HERE}/usage.sh"
+fi
 
 if [[ "$1" == "in" ]]; then
   shift;

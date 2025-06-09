@@ -25,10 +25,11 @@ Your project should contain a `.docks.yml` file, with the following structure:
 ```text
 docks -h | --help | [-r {project root}] {command} <...args>
   -r {project root}  Set project root (defaults to pwd) or whatever
-                     folder above contains '.docks.yml'
+                     folder above contains '.docks.yml' (must be first arg if present)
   start              Start all screens
   start {names...}   Start the screens named {names...}
   go {name}          Connect interactively with {name}
+  in {command}       Run a command inside the configured container
   kill               Kill all screens
   kill {names...}    Kill screens {names...}
   lsr                List running screens
@@ -37,6 +38,5 @@ docks -h | --help | [-r {project root}] {command} <...args>
   lsc {pattern}      List configured screens matching {pattern}
   update             Check for updates
 Logs are stored in `{project root}/{name}.log`
-Screens are configured in `{project root}`/.docks.yml
+Screens are configured in `{project root}/.docks.yml`
 ```
-
