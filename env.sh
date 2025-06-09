@@ -25,9 +25,8 @@ function seekAbove() {
 
 if [[ "$1" == '-r' ]]; then
   shift
-  pushd "$1" > /dev/null 2>&1 || exit 1
+  DOCKER_ROOT="$(seekAbove "$1")"
   shift
-  DOCKER_ROOT="${PWD}"
 else
   pushd . > /dev/null 2>&1
   DOCKER_ROOT="$(seekAbove "${PWD}")"
@@ -40,6 +39,7 @@ else
     fi
   fi 
 fi
+
 popd > /dev/null 2>&1 || exit 1
 
 CONFIG="${DOCKER_ROOT}/.docks.yml"

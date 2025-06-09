@@ -33,6 +33,7 @@ fi
 REAL_BASH_SOURCE="$(readlink -f "$0")"
 HERE="$(dirname "${REAL_BASH_SOURCE}")";
 echo "Installed to ${HERE}"
+
 if [[ -z "$UPDATED" ]]; then
   pushd "${HERE}" > /dev/null 2>&1 || true
   git pull
@@ -41,7 +42,9 @@ fi
 
 source "${HERE}/prereqs.sh"
 HOME_BIN="$(home-bin)"
+
 if [[ -L "${HOME_BIN}/docks" ]]; then
   rm "${HOME_BIN}/docks"
 fi
+
 ln -s "${HERE}/docks.sh" "${HOME_BIN}/docks" && echo "Symlinked to ${HOME_BIN}/docks"

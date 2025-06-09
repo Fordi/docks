@@ -12,7 +12,6 @@ source "${HERE}/prereqs.sh"
 source "${HERE}/env.sh"
 source "${HERE}/utils.sh"
 
-
 PREFIX="$(getConfig prefix "")"
 CONTAINER="$(getConfig container dev)"
 
@@ -51,6 +50,7 @@ if [[ "$1" == "lsc" ]]; then
   done < <(getScreens || true) | grep -E "${PATTERN}"
   exit 0
 fi
+
 if [[ "$1" == "lsr" ]]; then
   shift;
   PATTERN="${1:-.${PREFIX}}"
@@ -58,6 +58,7 @@ if [[ "$1" == "lsr" ]]; then
   screen -ls | grep -E "${PATTERN}" | cut -d '.' -f 2 | cut -f 1
   exit 0
 fi
+
 if [[ "$1" == "go" ]]; then
   shift;
   if [[ "${#}" == 0 ]]; then
@@ -67,6 +68,7 @@ if [[ "$1" == "go" ]]; then
   screen -x "$1"
   exit 0
 fi
+
 if [[ "$1" == "start" ]]; then
   shift;
   SCREENS=("${@}")
