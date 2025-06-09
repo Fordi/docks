@@ -23,6 +23,10 @@ if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
   fi
   if [[ ! -d "${HOME}/.local/lib/docks" ]]; then
     git clone "https://github.com/Fordi/docks" "${HOME}/.local/lib/docks"
+  else
+    pushd "${HOME}/.local/lib/docks" > /dev/null 2>&1 || true
+    git pull
+    popd > /dev/null 2>&1 || true
   fi
   # shellcheck disable=SC1091
   bash "${HOME}/.local/lib/docks/install.sh"
