@@ -2,6 +2,10 @@
 REAL_BASH_SOURCE="$(readlink -f "${BASH_SOURCE[0]}")"
 # shellcheck source-path=SCRIPTDIR
 HERE="$(dirname "${REAL_BASH_SOURCE}")";
+if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "-?" || "$1" == "help" ]]; then
+  shift
+  source "${HERE}/usage.sh"
+fi
 
 if [[ "$1" == "update" ]]; then
   pushd "${HERE}" > /dev/null 2>&1 || exit 1
@@ -70,21 +74,4 @@ if [[ "$1" == "start" ]]; then
   exit 0
 fi
 
-echo "$(basename "$0") [-r {path}] [command] [...args]"
-echo "  -r {path}        Set root to {path}" >&2
-echo "  start            Start all screens" >&2
-echo "  start {names...} Start the screens named {names...}" >&2
-echo "  go {name}        Connect interactively with {name}" >&2
-echo "  kill             Kill all screens" >&2
-echo "  kill {names...}  Kill screens {names...}" >&2
-echo "  lsr              List running screens" >&2
-echo "  lsr {pattern}    List running screens matching {pattern} (egrep)" >&2
-echo "  lsc              List configured screens" >&2
-echo "  lsc {pattern}    List configured screens matching {pattern}" >&2
-echo "Logs are stored in \`${DOCKER_ROOT}/{name}.log\`" >&2
-echo "Screens are configured in \`${DOCKER_ROOT}\`/.screens" >&2
-
-if [[ -n "$1" ]]; then
-  echo "--- Unknown command: $1" >&2
-  exit 1
-fi
+source "${HERE}/usage.sh"

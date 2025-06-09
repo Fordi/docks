@@ -1,6 +1,6 @@
 #shellcheck shell=bash
-if ! command -v jq > /dev/null 2>&1; then
-  echo "jq is required; please install it" >&2
+if ! command -v yq > /dev/null 2>&1; then
+  echo "yq is required; please install it" >&2
   exit 1
 fi
 if ! command -v pr > /dev/null 2>&1; then

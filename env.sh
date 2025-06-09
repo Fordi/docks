@@ -6,18 +6,18 @@ if [[ "$1" == '-r' ]]; then
   DOCKER_ROOT="${PWD}"
 else
   pushd . > /dev/null 2>&1
-  while [[ "${PWD}" != "/" && ! -f "./docker-compose.yml" ]]; do
+  while [[ "${PWD}" != "/" && ! -f ".docks.yml" ]]; do
     cd ..
   done
-  if [[ "${PWD}" == "/" && ! -f "./docker-compose.yml" ]]; then
-    echo "No docker compose found; exiting"
+  if [[ "${PWD}" == "/" && ! -f ".docks.yml" ]]; then
+    echo "No .docks.yml found; exiting"
     exit 1
   fi
   DOCKER_ROOT="${PWD}"
 fi
 popd > /dev/null 2>&1 || exit 1
 
-CONFIG="${DOCKER_ROOT}/.screens"
+CONFIG="${DOCKER_ROOT}/.docks"
 
 if [[ ! -f "${CONFIG}" ]]; then
   echo "You must create a JSON config file in ${CONFIG}" >&2

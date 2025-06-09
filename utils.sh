@@ -53,13 +53,13 @@ function containsElement() {
   return 1;
 }
 
-CONFIG="${DOCKER_ROOT}/.screens"
+CONFIG="${DOCKER_ROOT}/.docks.yaml"
 
 function getScreens() {
-  jq -r '.screens | to_entries[] | "\"\(.key)\" \"\(.value)\""' "${CONFIG}" || \
-    echo "Nothing in ${DOCKER_ROOT}/.screens" >&2
+  yq -r '.screens | to_entries[] | "\"\(.key)\" \"\(.value)\""' "${CONFIG}" 2>/dev/null || \
+    echo "Nothing in ${CONFIG}" >&2
 }
 
 function getConfig() {
-  jq -r '.["'"$1"'"] // "'"$2"'"' "${CONFIG}"
+  yq -r '.["'"$1"'"] // "'"$2"'"' "${CONFIG}"
 }
