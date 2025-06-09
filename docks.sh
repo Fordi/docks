@@ -4,9 +4,7 @@ REAL_BASH_SOURCE="$(readlink -f "${BASH_SOURCE[0]}")"
 HERE="$(dirname "${REAL_BASH_SOURCE}")";
 
 if [[ "$1" == "update" ]]; then
-  pushd "${HERE}" > /dev/null 2>&1 || exit 1
-  git pull
-  popd > /dev/null 2>&1 || exit 1
+  bash "${HERE}/install.sh"
   exit
 fi
 
