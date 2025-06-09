@@ -44,7 +44,9 @@ function endScreen() {
   pushd "${DOCKER_ROOT}" > /dev/null 2>&1 || return 1
   if screen -ls "${fullName}" > /dev/null 2>&1; then
     echo "Terminating ${fullName}"
-    screen -XS "${fullName}" quit
+    screen -S "${fullName}" -X at 0 stuff '^C'
+    screen -S "${fullName}" -X at 0 stuff "exit\n"
+    
   else
     echo "${fullName} not running"
   fi
