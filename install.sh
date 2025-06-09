@@ -20,12 +20,13 @@ if [[ "$0" == "bash" ]]; then
   mkdir -p "${HOME}/.local/lib"
   if [[ ! -d "${HOME}/.local/lib/docks" ]]; then
     git clone "https://github.com/Fordi/docks" "${HOME}/.local/lib/docks"
-    # shellcheck disable=SC1091
-    . "${HOME}/.local/lib/docks/install.sh"
-    exit
   fi
+  # shellcheck disable=SC1091
+  source "${HOME}/.local/lib/docks/install.sh"
+  exit
 fi
 REAL_BASH_SOURCE="$(readlink -f "${BASH_SOURCE[0]}")"
 HERE="$(dirname "${REAL_BASH_SOURCE}")";
+source "${HERE}/prereqs.sh"
 HOME_BIN="$(home-bin)"
 ln -s "${HERE}/docks.sh" "${HOME_BIN}/docks"
