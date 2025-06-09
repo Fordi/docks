@@ -12,6 +12,7 @@ echo "  lsr                List running screens" >&2
 echo "  lsr {pattern}      List running screens matching {pattern} (egrep)" >&2
 echo "  lsc                List configured screens" >&2
 echo "  lsc {pattern}      List configured screens matching {pattern}" >&2
+echo "  update             Check for updates" >&2
 echo "Logs are stored in \`${DOCKER_ROOT:-{project root}}/{name}.log\`" >&2
 echo "Screens are configured in \`${DOCKER_ROOT:-{project root}}\`/.docks.yml" >&2
 
