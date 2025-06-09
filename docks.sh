@@ -76,7 +76,7 @@ if [[ "$1" == "start" ]]; then
   SCREENS=("${@}")
   # shellcheck disable=SC2312
   while read -r line; do
-    SCREEN="$(echo "${line}" | cut -d \" -f 2)"
+    SCREEN="${PREFIX}$(echo "${line}" | cut -d \" -f 2)"
     if [[ "${#}" == 0 ]] || containsElement "${SCREEN}" "${SCREENS[@]}"; then
       IFS=" " read -r -a CMD <<< "$(echo "${line}" | cut -d \" -f 4 || true)"
       startScreen "${SCREEN}" "${CMD[@]}"

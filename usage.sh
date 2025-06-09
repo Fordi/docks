@@ -25,6 +25,7 @@ echo "  lsc {pattern}      List configured screens matching {pattern}" >&2
 echo "  update             Check for updates" >&2
 echo "Logs are stored in \`${DOCKER_ROOT}/{name}.log\`" >&2
 echo "Screens are configured in \`${DOCKER_ROOT}/.docks.yml\`" >&2
+echo "When connected, Ctrl+A D will leave without ending the screen session" >&2
 
 if [[ -n "$1" ]]; then
   echo "--- Unknown command: $1" >&2
