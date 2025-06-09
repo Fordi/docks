@@ -6,6 +6,7 @@ echo "                     folder above contains '.docks.yml'" >&2
 echo "  start              Start all screens" >&2
 echo "  start {names...}   Start the screens named {names...}" >&2
 echo "  go {name}          Connect interactively with {name}" >&2
+echo "  in {command}       Run a command inside the configured container" >&2
 echo "  kill               Kill all screens" >&2
 echo "  kill {names...}    Kill screens {names...}" >&2
 echo "  lsr                List running screens" >&2

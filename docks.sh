@@ -21,6 +21,12 @@ source "${HERE}/utils.sh"
 PREFIX="$(getConfig prefix "")"
 CONTAINER="$(getConfig container dev)"
 
+if [[ "$1" == "in" ]]; then
+  shift;
+  inDocker "$@"
+  exit
+fi
+
 if [[ "$1" == "kill" ]]; then
   shift;
   if [[ "${#}" == 0 ]]; then
