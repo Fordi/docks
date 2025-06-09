@@ -53,7 +53,7 @@ function containsElement() {
   return 1;
 }
 
-CONFIG="${DOCKER_ROOT}/.docks.yaml"
+CONFIG="${DOCKER_ROOT}/.docks.yml"
 
 function getScreens() {
   yq -r '.screens | to_entries[] | "\"\(.key)\" \"\(.value)\""' "${CONFIG}" 2>/dev/null || \

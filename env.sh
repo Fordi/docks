@@ -17,10 +17,10 @@ else
 fi
 popd > /dev/null 2>&1 || exit 1
 
-CONFIG="${DOCKER_ROOT}/.docks"
+CONFIG="${DOCKER_ROOT}/.docks.yml"
 
 if [[ ! -f "${CONFIG}" ]]; then
-  echo "You must create a JSON config file in ${CONFIG}" >&2
+  echo "You must create a YAML config file in ${CONFIG}" >&2
   exit 1
 fi
 
