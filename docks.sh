@@ -1,8 +1,21 @@
 #!/bin/bash
-HERE="$(dirname "$BASH_SOURCE")";
-. "${HERE}/prereqs.sh"
-. "${HERE}/env.sh"
-. "${HERE}/utils.sh"
+REAL_BASH_SOURCE="$(readlink -f "${BASH_SOURCE[0]}")"
+# shellcheck source-path=SCRIPTDIR
+HERE="$(dirname "${REAL_BASH_SOURCE}")";
+
+if [[ "$1" == "update" ]]; then
+  pushd "${HERE}" > /dev/null 2>&1 || exit 1
+  git pull
+  popd > /dev/null 2>&1 || exit 1
+  exit
+fi
+
+source "${HERE}/prereqs.sh"
+source "${HERE}/env.sh"
+source "${HERE}/utils.sh"
+
+PREFIX="$(getConfig prefix "")"
+CONTAINER="$(getConfig container dev)"
 
 if [[ "$1" == "kill" ]]; then
   shift;
@@ -10,10 +23,7 @@ if [[ "$1" == "kill" ]]; then
     while read -r line; do
       SCREEN="$(echo "${line}" | cut -d \" -f 2)"
       endScreen "${SCREEN}"
-    done < <(
-      jq -r '.screens | to_entries[] | "\"\(.key)\" \"\(.value)\""' "${DOCKER_ROOT}/.screens" \
-      || echo "Nothing in ${DOCKER_ROOT}/.screens" || true \
-    )
+    done < <(getScreens || true)
     exit 0
   fi
   for name in "$@"; do
@@ -25,18 +35,16 @@ fi
 if [[ "$1" == "lsc" ]]; then
   shift;
   PATTERN="${1:-^${PREFIX}}"
-  while read -r line; do
-    SCREEN="$(echo "${line}" | cut -d \" -f 2)"
+  while read -r line || true; do
+    SCREEN="$(echo "${line}" | (cut -d \" -f 2 || true))"
     echo "${PREFIX}${SCREEN}"
-  done < <(
-    jq -r '.screens | to_entries[] | "\"\(.key)\" \"\(.value)\""' "${DOCKER_ROOT}/.screens" \
-    || echo "Nothing in ${DOCKER_ROOT}/.screens" || true \
-  ) | grep -E "${PATTERN}"
+  done < <(getScreens || true) | grep -E "${PATTERN}"
   exit 0
 fi
 if [[ "$1" == "lsr" ]]; then
   shift;
   PATTERN="${1:-.${PREFIX}}"
+  # shellcheck disable=SC2312
   screen -ls | grep -E "${PATTERN}" | cut -d '.' -f 2 | cut -f 1
   exit 0
 fi
@@ -58,13 +66,11 @@ if [[ "$1" == "start" ]]; then
       IFS=" " read -r -a CMD <<< "$(echo "${line}" | cut -d \" -f 4 || true)"
       startScreen "${SCREEN}" "${CMD[@]}"
     fi
-  done < <(
-    jq -r '.screens | to_entries[] | "\"\(.key)\" \"\(.value)\""' "${DOCKER_ROOT}/.screens" \
-    || echo "Nothing in ${DOCKER_ROOT}/.screens" || true \
-  )
+  done < <(getScreens || true)
   exit 0
 fi
-echo "$0 [-r {path}] [command] [...args]"
+
+echo "$(basename "$0") [-r {path}] [command] [...args]"
 echo "  -r {path}        Set root to {path}" >&2
 echo "  start            Start all screens" >&2
 echo "  start {names...} Start the screens named {names...}" >&2
@@ -77,6 +83,7 @@ echo "  lsc              List configured screens" >&2
 echo "  lsc {pattern}    List configured screens matching {pattern}" >&2
 echo "Logs are stored in \`${DOCKER_ROOT}/{name}.log\`" >&2
 echo "Screens are configured in \`${DOCKER_ROOT}\`/.screens" >&2
+
 if [[ -n "$1" ]]; then
   echo "--- Unknown command: $1" >&2
   exit 1

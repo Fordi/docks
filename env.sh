@@ -1,13 +1,12 @@
-#!/bin/bash
-
+#shellcheck shell=bash
 if [[ "$1" == '-r' ]]; then
   shift
   pushd "$1" > /dev/null 2>&1 || exit 1
   shift
-  DOCKER_ROOT="$PWD"
+  DOCKER_ROOT="${PWD}"
 else
   pushd . > /dev/null 2>&1
-  while [[ "$PWD" != "/" && ! -f "./docker-compose.yml" ]]; do
+  while [[ "${PWD}" != "/" && ! -f "./docker-compose.yml" ]]; do
     cd ..
   done
   if [[ "${PWD}" == "/" && ! -f "./docker-compose.yml" ]]; then
@@ -25,5 +24,5 @@ if [[ ! -f "${CONFIG}" ]]; then
   exit 1
 fi
 
-export PREFIX="$(jq -r '.prefix // ""' "${CONFIG}")"
-export CONTAINER="$(jq -r '.container // "dev"' "${CONFIG}")"
+export DOCKER_ROOT
+export CONFIG

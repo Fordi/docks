@@ -1,4 +1,4 @@
-#!/bin/bash
+#shellcheck shell=bash
 if ! command -v jq > /dev/null 2>&1; then
   echo "jq is required; please install it" >&2
   exit 1
