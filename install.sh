@@ -48,13 +48,13 @@ if [[ -L "${HOME_BIN}/docks" ]]; then
 fi
 
 ln -s "${HERE}/docks.sh" "${HOME_BIN}/docks" && echo "Symlinked to ${HOME_BIN}/docks"
-COMPLETE=". \"${HOME}/.local/lib/docks/completion.sh\""
+COMPLETE="\"\${HOME}/.local/lib/docks/completion.sh\""
 
-if ! grep "${COMPLETE}" "${HOME}/.bashrc" > /dev/null; then
+if ! grep "source ${COMPLETE}" "${HOME}/.bashrc" > /dev/null; then
   {
     echo ""
     echo "# Completions for docks"
-    echo ". \"${HOME}/.local/lib/docks/completion.sh\""
+    echo "source ${COMPLETE}"
   } >> "${HOME}/.bashrc"
   echo "Added completions for docks to ${HOME}/.bashrc"
 fi
